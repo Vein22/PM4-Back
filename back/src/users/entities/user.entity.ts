@@ -15,16 +15,16 @@ export class User {
   @Column({length: 50, nullable: false, unique: true })
   email: string;
 
-  @Column({length: 20, nullable: false})
+  @Column({length: 100, nullable: false})
   password: string;
 
-  @Column('int', { nullable: false })
+  @Column({nullable: false })
   phone: number;
   
   @Column({length: 50})
   country: string;
 
-  @Column()
+  @Column({length: 100})
   address: string;
 
   @Column({length: 50})

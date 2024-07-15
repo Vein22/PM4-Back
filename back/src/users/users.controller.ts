@@ -12,14 +12,6 @@ import { userInfo } from "os";
 export class UsersController{
     constructor(private readonly usersService: UsersService) {}
     
-    @HttpCode(201)
-    @HttpCode(HttpStatus.CREATED)
-
-    @Post()
-    async createUser(@Body() createUserDto: CreateUserDto) {
-      return this.usersService.createUser(createUserDto);
-    }
-    
     @HttpCode(200)
     @UseGuards(AuthGuard)
     @Get()

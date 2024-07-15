@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoriesModule } from './categories/category.module';
 import { OrdersModule } from './orders/orders.module';
 import { FilesModule } from './files/files.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -20,7 +21,11 @@ import { FilesModule } from './files/files.module';
       inject: [ConfigService], 
       useFactory: (configService: ConfigService) => configService.get("data-source")
     }),
-    UsersModule, ProductsModule, AuthModule, CategoriesModule, OrdersModule, FilesModule],
+    UsersModule, ProductsModule, AuthModule, CategoriesModule, OrdersModule, FilesModule, JwtModule.register({
+      global: true,
+      signOptions: { expiresIn: '1h' },
+      secret: process.env.JWT_SECRET,
+    })],
   controllers: [],
   providers: [],
 })

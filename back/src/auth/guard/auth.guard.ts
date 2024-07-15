@@ -1,31 +1,28 @@
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException  } from "@nestjs/common"
+import { JwtService } from "@nestjs/jwt";
 import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+    constructor(private readonly jwtService: JwtService) {}
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         const request = context.switchToHttp().getRequest();
-        const authHeader = request.headers.authorization;
+        const token = request.headers['authorization']?.split(' ')[1] ?? '';
        
-        if (!authHeader) {
-            throw new UnauthorizedException('Authorization header is missing');
+        if (!token) {
+            throw new UnauthorizedException('Bearer token is missing');
           }
+           try {
+             const secret = process.env.JWT_SECRET;
+             const payload = this.jwtService.verify(token, {secret});
+             payload.iat = new Date(payload.iat * 1000);
+             payload.iat = new Date(payload.exp * 1000);
+             payload.roles = ['admin'];
+             request.user = payload;
+             return true;
 
-          const authHeaderParts = authHeader.split(' ');
-          if (authHeaderParts.length !== 2 || authHeaderParts[0] !== 'Basic') {
-            throw new UnauthorizedException('Invalid Authorization header format. Use <base64-encoded-email:password>');
-          }
-        
-          const credentials = Buffer.from(authHeaderParts[1], 'base64').toString('utf-8').split(':');
-          if (credentials.length !== 2) {
-          throw new UnauthorizedException('Invalid Authorization header format. Use Basic <base64-encoded-email:password>');
-          }
-
-         const [email, password] = credentials;
-         if (!email || !password) {
-         throw new UnauthorizedException('Email or password is missing in authorization header');
-         }
-
-          return true;
+           } catch (error) {
+            throw new UnauthorizedException('Invalid Token');
+           }
      }
 }
