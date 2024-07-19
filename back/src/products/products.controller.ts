@@ -4,6 +4,9 @@ import { CreateProductDto } from "./dto/create-product.dto";
 import { ProductsService } from "./products.service";
 import { validate } from 'class-validator';
 import { UpdateProductDto } from "./dto/update-product.dto";
+import { Roles } from "src/decorators/roles.decorator";
+import { Role } from "src/auth/roles/roles.enum";
+import { RolesGuard } from "src/auth/guard/roles.guard";
 
 @Controller("products")
 export class ProductsController{
@@ -30,7 +33,8 @@ export class ProductsController{
   
 
     @Put(":id")
-    @UseGuards(AuthGuard)
+    @Roles(Role.Admin)
+    @UseGuards(AuthGuard, RolesGuard)
     async updateProductById(@Param("id") id: string, @Body() updateProductDto: UpdateProductDto) {
       return this.productsServices.updateProductById(id, updateProductDto)
     }

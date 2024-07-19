@@ -7,13 +7,17 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 import { AuthGuard } from "src/auth/guard/Auth.Guard";
 import { User } from "./entities/user.entity";
 import { userInfo } from "os";
+import { Roles } from "src/decorators/roles.decorator";
+import { Role } from "src/auth/roles/roles.enum";
+import { RolesGuard } from "src/auth/guard/roles.guard";
 
 @Controller("users")
 export class UsersController{
     constructor(private readonly usersService: UsersService) {}
     
     @HttpCode(200)
-    @UseGuards(AuthGuard)
+    @Roles(Role.Admin)
+    @UseGuards(AuthGuard, RolesGuard)
     @Get()
     async getUsers() {
       return this.usersService.getUsers();

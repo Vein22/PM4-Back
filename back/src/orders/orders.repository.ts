@@ -23,7 +23,7 @@ export class OrdersRepository {
   async addOrder(createOrderDto: CreateOrderDto): Promise<Order> {
     const { userId, products } = createOrderDto;
 
-    const user = await this.userRepository.findOne({ where: { id: userId }, relations: ['orders'] });
+    const user = await this.userRepository.findOne({ where: { id: userId }, relations: ['orders'], select: ['id', 'name', 'email', 'phone', 'country', 'address', 'city'] });
     if (!user) {
       throw new NotFoundException(`User with ID ${userId} not found`);
     }
