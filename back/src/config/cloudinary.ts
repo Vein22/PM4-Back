@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config';
 dotenvConfig({path: ".env.development"})
         
 export const CloudinaryConfig = {
-    provide: "CLOUDINARY",
+    provide: "cloudinary",
     useFactory: (configService: ConfigService) => {
         return cloudinary.config({
             cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 

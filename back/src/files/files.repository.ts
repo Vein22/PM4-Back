@@ -1,10 +1,11 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { v2 as cloudinary } from 'cloudinary';
-import { UploadApiResponse, UploadApiErrorResponse } from 'CLOUDINARY';
+import { UploadApiResponse, UploadApiErrorResponse } from 'cloudinary';
+import 'multer';
 
 @Injectable()
 export class FilesRepository {
-  constructor(@Inject('CLOUDINARY') private cloudinary) {}
+  constructor(@Inject('cloudinary') private cloudinary) {}
 
   async uploadImage(file: Express.Multer.File): Promise<UploadApiResponse | UploadApiErrorResponse> {
     return new Promise((resolve, reject) => {

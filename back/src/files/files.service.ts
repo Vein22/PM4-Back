@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { UploadApiResponse, UploadApiErrorResponse } from 'CLOUDINARY';
+import { UploadApiResponse, UploadApiErrorResponse } from 'cloudinary';
 import { FilesRepository } from "./files.repository";
 
 @Injectable()

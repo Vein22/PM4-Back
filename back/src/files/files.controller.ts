@@ -2,8 +2,11 @@ import { Controller, Post, Param, UploadedFile, UseInterceptors, BadRequestExcep
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FilesService } from './files.service';
 import { ProductsService } from '../products/products.service';
-import { ImageUploadPipe } from 'src/pipes/image-upload.pipe';
-import { AuthGuard } from 'src/auth/guard/Auth.Guard';
+import { ImageUploadPipe } from '../pipes/image-upload.pipe';
+import { AuthGuard } from '../auth/guard/auth.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger/dist/decorators';
+
+
 
 @Controller('files')
 export class FilesController {
@@ -12,8 +15,10 @@ export class FilesController {
     private readonly productsService: ProductsService,
   ) {}
 
+  @ApiTags('Files')
   @Post('uploadImage/:id')
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @UsePipes(ImageUploadPipe)
   @UseInterceptors(FileInterceptor('file'))
   async uploadImage(@Param('id') id: string, @UploadedFile(

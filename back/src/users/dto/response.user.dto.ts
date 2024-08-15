@@ -1,5 +1,4 @@
 export class UserResponseDto {
-    id: string;
     name: string;
     email: string;
     address: string;
@@ -8,8 +7,7 @@ export class UserResponseDto {
     city?: string;
   
     constructor(partial: Partial<UserResponseDto>) {
-      const { id, name, email, address, phone, country, city } = partial;
-      this.id = id;
+      const { name, email, address, phone, country, city } = partial;
       this.name = name;
       this.email = email;
       this.address = address;

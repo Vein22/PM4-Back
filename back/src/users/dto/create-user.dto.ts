@@ -1,5 +1,5 @@
 
-import { IsEmail, IsNotEmpty, IsString, MaxLength, IsOptional, MinLength, Matches } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, MaxLength, IsOptional, MinLength, Matches, IsEmpty } from 'class-validator';
 
 export class CreateUserDto {
     @IsNotEmpty()
@@ -37,4 +37,7 @@ export class CreateUserDto {
     @MinLength(5)
     @MaxLength(20)
     city: string;
-}
+
+    @IsEmpty()
+    isAdmin: boolean;
+  }

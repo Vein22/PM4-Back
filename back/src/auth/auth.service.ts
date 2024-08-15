@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
-import { UsersService } from "src/users/users.service";
+import { UsersService } from "../users/users.service";
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from "src/users/dto/create-user.dto";
-import { SignUpDto } from "src/users/dto/signup.dto";
-import { User } from "src/users/entities/user.entity";
+import { SignUpDto } from "../users/dto/signup.dto";
+import { User } from "../users/entities/user.entity";
 import { JwtService } from '@nestjs/jwt';
-import { UserResponseDto } from "src/users/dto/response.user.dto";
+import { UserResponseDto } from "../users/dto/response.user.dto";
 
 @Injectable()
 export class AuthService {
@@ -17,7 +17,7 @@ export class AuthService {
         return "Get auth.";
     } 
 
-  async singUp( signUpUser: SignUpDto) {
+  async signUp( signUpUser: SignUpDto) {
     const dbUser = await this.usersService.findByEmail(signUpUser.email)
     if(dbUser) {
       throw new BadRequestException('Email already exist')

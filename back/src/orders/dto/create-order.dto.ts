@@ -1,4 +1,4 @@
-
+import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsUUID, ArrayMinSize, ValidateNested  } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -9,6 +9,15 @@ quantity: number;
 }
 
 export class CreateOrderDto {
+
+  /**
+     * ID perteneciente al usuario.
+     * @example 8af19289-f893-4617-9809-eae6769d4415.
+     */
+  @ApiProperty({
+    example: '8af19289-f893-4617-9809-eae6769d4415.',
+    description: 'ID perteneciente al usuario.'
+  })
   @IsNotEmpty()
   @IsUUID()
   userId: string;
