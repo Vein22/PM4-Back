@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, HttpCode, HttpStatus, Param, Body, NotFoundException, Query, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Put, Delete, HttpCode, HttpStatus, Patch, Param, Body, NotFoundException, Query, UseGuards } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
@@ -11,6 +11,7 @@ import { Roles } from "../decorators/roles.decorator";
 import { Role } from "../auth/roles/roles.enum";
 import { RolesGuard } from "../auth/guard/roles.guard";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger/dist";
+import { ChangePasswordDto } from "./dto/changePassword.dto";
 
 @Controller("users")
 export class UsersController{
@@ -51,6 +52,12 @@ export class UsersController{
     @Delete(':id')
     async deleteUserById(@Param('id') id: string) {
     return this.usersService.deleteUserById(id);
+  }
+  
+  @ApiTags('Users')
+  @Patch(':id/change-password')
+  async changePassword(@Param('id') id: string, @Body() ChangePasswordDto: ChangePasswordDto){
+      return this.usersService.changePassword(id, ChangePasswordDto)
   }
 } 
 

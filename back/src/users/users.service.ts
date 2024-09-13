@@ -1,12 +1,18 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException, BadRequestException, UnauthorizedException } from "@nestjs/common";
+import { ChangePasswordDto } from "./dto/changePassword.dto";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { User } from "./entities/user.entity";
 import { UsersRepository } from "./users.repository";
+import * as bcrypt from 'bcrypt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService{
-    constructor(private readonly usersRepository: UsersRepository) {}
+    constructor(
+        private readonly usersRepository: UsersRepository,
+        ) {}
 
     async findByEmail(email: string): Promise<User> {
         return this.usersRepository.findByEmail(email);
@@ -32,4 +38,20 @@ export class UsersService{
     async deleteUserById(id: string): Promise<{id:string}>  {
         return this.usersRepository.deleteUserById(id);
     }
+
+
+      async changePassword(id: string, ChangePasswordDto:ChangePasswordDto): Promise<string> {
+        const user = await this.usersRepository.findById(id);
+        if (!user) {
+            throw new NotFoundException(`User with ID ${id} not found`);
+        }
+        const isPasswordValid = await bcrypt.compare(ChangePasswordDto.currentPassword, user.password)
+        if(!isPasswordValid) {
+          throw new UnauthorizedException('Current password invalid')
+        }
+
+          const hashedNewPassword = await bcrypt.hash(ChangePasswordDto.newPassword, 10);
+          await this.usersRepository.updatePassword(id, hashedNewPassword)
+          return 'Password changed successfully';
+      }
 }

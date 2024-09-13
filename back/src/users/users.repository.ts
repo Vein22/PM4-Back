@@ -1,9 +1,11 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException, BadRequestException, UnauthorizedException } from "@nestjs/common";
 import { User } from "./entities/user.entity";
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
+import { ChangePasswordDto } from "./dto/changePassword.dto";
 
 @Injectable()
 export class UsersRepository{
@@ -49,4 +51,21 @@ export class UsersRepository{
         await this.userRepository.delete(id);
         return { id };
       }
-}
+
+      async updatePassword(id: string, newPassword: string): Promise<User> {
+        const user = await this.userRepository.findOne({ 
+          where: { id },
+          select: ["id", "password"]
+        });
+       
+        user.password = newPassword; 
+        return await this.userRepository.save(user);
+    }
+
+      async findById(id: string): Promise<User>{
+        const user = await this.userRepository.findOne({ 
+          where: { id }
+        });
+        return user
+      }
+ }

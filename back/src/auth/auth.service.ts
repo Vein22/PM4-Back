@@ -44,7 +44,10 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const isPasswordValid = bcrypt.compare( password, user.password)
+
+    const isPasswordValid = await bcrypt.compare( password, user.password)
+    
+
 
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
@@ -60,6 +63,6 @@ export class AuthService {
       const token = this.jwtService.sign(payload);
 
 
-    return { success: 'Sign in successfully', token};
+    return { success: 'Sign in successfully', token, };
   }
 }

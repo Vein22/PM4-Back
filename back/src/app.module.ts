@@ -12,9 +12,9 @@ import { FilesModule } from './files/files.module';
 import { JwtModule } from '@nestjs/jwt';
 import { User } from './users/entities/user.entity';
 import { Order } from './orders/entities/order.entity';
-import { OrderDetail } from './order-details/entities/order-detail.entity';
 import { Product } from './products/entities/product.entity';
-import { Category } from './categories/entities/category.entity';
+import { OrderDetail } from './order-details/entities/order-detail.entity';
+import {Category} from './categories/entities/category.entity'
 
 @Module({
   imports: [

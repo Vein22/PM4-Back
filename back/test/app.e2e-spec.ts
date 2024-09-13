@@ -18,13 +18,13 @@ describe('AppController (e2e)', () => {
     authService = moduleFixture.get<AuthService>(AuthService);
     await app.init();
 
-    const userCredentials = { email: 'mado@mail.com', password: 'Suenoooo13$' };
+    const userCredentials = { email: 'monoe@mail.com', password: 'Dreamworld17$' };
+
 
     const response = await request(app.getHttpServer())
       .post('/auth/signin')
       .send(userCredentials);
 
-      console.log('Sign-in response:', response.body);
     token = response.body.token; 
   });
 
